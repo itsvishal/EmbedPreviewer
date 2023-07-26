@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Embed URL Extractor and Preview</title>
+</head>
+<body>
+  <h1>Embed URL Extractor and Preview</h1>
+  <label for="embedInput">Paste Embed HTML:</label><br>
+  <textarea id="embedInput" rows="5" cols="50" oninput="extractAndPreview()"></textarea><br>
+  <br>
+  <iframe id="previewFrame" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+
+  <script>
+    function extractAndPreview() {
+      const embedInput = document.getElementById('embedInput').value;
+      const urlPattern = /src="([^"]+)"/;
+      const match = embedInput.match(urlPattern);
+      
+      if (match && match[1]) {
+        const url = match[1];
+        document.getElementById('previewFrame').src = url;
+
+        // Push the URL to clipboard
+        copyToClipboard(url);
+      }
+    }
+
+    function copyToClipboard(text) {
+      const dummyElement = document.createElement('textarea');
+      dummyElement.value = text;
+      document.body.appendChild(dummyElement);
+      dummyElement.select();
+      document.execCommand('copy');
+      document.body.removeChild(dummyElement);
+    }
+  </script>
+</body>
+</html>
